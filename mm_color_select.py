@@ -1,3 +1,6 @@
+# Based on a blog post by Steve Eddins:
+# http://blogs.mathworks.com/steve/2010/12/23/two-dimensional-histograms/
+
 url = 'http://blogs.mathworks.com/images/steve/2010/mms.jpg'
 
 import os
