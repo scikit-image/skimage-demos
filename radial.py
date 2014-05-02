@@ -79,7 +79,7 @@ class RadialDistortionInterface:
         plt.draw()
 
     def remove_distortion(self, reshape=True):
-        def radial_tf(xy, p=None):
+        def radial_tf(xy, p):
             """Radially distort coordinates.
 
             Given a coordinate (x,y), apply the radial distortion defined by
@@ -174,16 +174,23 @@ class RadialDistortionInterface:
 
             return np.sum((xy_tf_back - xy)**2)
 
+        # Find reverse transform via optimization
         rci = sp.optimize.fmin(inv_min, [rc[0], rc[1], 0., 0., 0.])
 
-        # Perform reverse transformation on coordinates
-        oshape = np.array(self.img.shape)
+        # Find extents of forward transform
+        out_shape = np.array((self.height, self.width))
         if reshape:
             top_corner = radial_tf([0., 0.], rc)
             bottom_corner = radial_tf([self.width - 1, self.height-1], rc)
-            out_shape = (bottom_corner - top_corner)[::-1]
+            out_shape = (bottom_corner - top_corner)[0, ::-1]
 
-        restored_image = warp(self.img, radial_tf, {'p': rci})
+        def radial_tf_shifted(xy, p):
+            xy += top_corner
+            xy = radial_tf(xy, p)
+            return xy
+
+        restored_image = warp(self.img, radial_tf_shifted, {'p': rci},
+                              output_shape=out_shape.astype(int))
 
         plt.figure()
         plt.imshow(restored_image)
