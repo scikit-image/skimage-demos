@@ -1,23 +1,20 @@
 # Based on a blog post by Steve Eddins:
 # http://blogs.mathworks.com/steve/2010/12/23/two-dimensional-histograms/
 
-url = 'http://blogs.mathworks.com/images/steve/2010/mms.jpg'
-
-import os
-if not os.path.exists('mm.png'):
-    print "Downloading M&M's..."
-    import urllib2
-    u = urllib2.urlopen(url)
-    f = open('mm.png', 'w')
-    f.write(u.read())
-    f.close()
-
-
 from skimage import io, color, exposure
 import numpy as np
 
 
-mm = io.imread('mm.png')
+url = 'http://blogs.mathworks.com/images/steve/2010/mms.jpg'
+
+import os
+if not os.path.exists('mm.jpg'):
+    print("Downloading M&M's...")
+    from urllib.request import urlretrieve
+    urlretrieve(url, 'mm.jpg')
+
+
+mm = io.imread('mm.jpg')
 mm_lab = color.rgb2lab(mm)
 L, a, b = mm_lab.T
 
