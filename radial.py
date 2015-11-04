@@ -51,14 +51,14 @@ class RadialDistortionInterface:
         """
         if (event.button == 1 and event.xdata and event.ydata):
             self.points.append((event.xdata,event.ydata))
-            print "Coordinate entered: (%f,%f)" % (event.xdata, event.ydata)
+            print("Coordinate entered: (%f,%f)" % (event.xdata, event.ydata))
 
             if len(self.points) % 3 == 0:
                 plt.gca().lines.append(self.cursorline)
                 self.make_cursorline()
 
         if (event.button != 1 and len(self.points) >= 3):
-            print "Removing distortion..."
+            print("Removing distortion...")
             plt.gca().lines = []
             plt.draw()
             self.remove_distortion()
@@ -222,7 +222,7 @@ class RadialDistortionInterface:
 from skimage.io import imread
 
 if len(sys.argv) != 2:
-    print "Usage: %s <image-file>" % sys.argv[0]
+    print("Usage: %s <image-file>" % sys.argv[0])
 else:
     img = imread(sys.argv[1])
     rdi = RadialDistortionInterface(img)
