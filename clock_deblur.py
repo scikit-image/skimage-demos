@@ -28,8 +28,8 @@ f[:M, :N] = wy * wx * image
 F = np.fft.fft2(f)
 
 v, u = np.ogrid[:MM, :NN]
-v -= (MM - 1)/2
-u -= (NN - 1)/2
+v -= (MM - 1) // 2
+u -= (NN - 1) // 2
 
 
 def apply_inverse_filter(image, T, a, b, K=5, clip=500):
